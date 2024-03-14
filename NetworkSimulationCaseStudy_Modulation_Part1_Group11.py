@@ -33,10 +33,12 @@ freq_logic_0_fsk = 25  # Hz
 freq_logic_1_fsk = 50  # Hz
 
 # Modulation
+print("Original Binary Data:", binary_data)
 ask_modulated_signal = binary_to_ask(binary_data, carrier_freq_ask, sampling_rate)
 fsk_modulated_signal = binary_to_fsk(binary_data, freq_logic_0_fsk, freq_logic_1_fsk, sampling_rate)
 
 # Plotting
+print("Original Binary Data:", binary_data)
 plt.figure(figsize=(12, 6))
 
 plt.subplot(2, 1, 1)
