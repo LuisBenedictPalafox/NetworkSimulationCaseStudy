@@ -30,13 +30,16 @@ for i in range(num_bits):
     else:
         fsk_modulated[i * sample_rate:(i + 1) * sample_rate] = fsk_carrier0[i * sample_rate:(i + 1) * sample_rate]
 
-# Plotting
-plt.figure(figsize=(12, 14))
+# Display seconds for ASK and FSK modulated signals
+display_seconds_ask = 3
+display_seconds_fsk = 3
+
+# Plotting all in one figure
+plt.figure(figsize=(12, 18))
 
 # Binary data bits
-plt.subplot(7, 1, 1)
+plt.subplot(9, 1, 1)
 plt.stem(binary_data, linefmt='b-', markerfmt='bo', basefmt=' ')
-# plt.stem(np.arange(num_bits + 1), np.append(binary_data, 0), linefmt='b-', markerfmt='bo', basefmt=' ') #for alignment for demo purposes if needed for some reason
 plt.title('Binary Data Bits')
 plt.xlabel('Bit Index')
 plt.ylabel('Bit Value')
@@ -44,7 +47,7 @@ plt.ylim(-0.5, 1.5)
 plt.grid(True)
 
 # Message signal in polar form
-plt.subplot(7, 1, 2)
+plt.subplot(9, 1, 2)
 plt.plot(ask_time, np.where(binary_data.repeat(sample_rate) > 0, 1, -1), 'r')
 plt.title('Message Signal in Polar Form')
 plt.xlabel('Time (s)')
@@ -52,7 +55,7 @@ plt.ylabel('Amplitude')
 plt.grid(True)
 
 # ASK carrier signal (display only 1 second for clarity)
-plt.subplot(7, 1, 3)
+plt.subplot(9, 1, 3)
 plt.plot(ask_time[:sample_rate], ask_carrier[:sample_rate], 'g')
 plt.title('ASK Carrier Signal (1 second)')
 plt.xlabel('Time (s)')
@@ -60,15 +63,24 @@ plt.ylabel('Amplitude')
 plt.grid(True)
 
 # ASK modulated signal
-plt.subplot(7, 1, 4)
+plt.subplot(9, 1, 4)
 plt.plot(ask_time, ask_modulated, 'm')
 plt.title('ASK Modulated Signal')
 plt.xlabel('Time (s)')
 plt.ylabel('Amplitude')
 plt.grid(True)
 
+# ASK modulated signal for desired seconds
+samples_to_display_ask = display_seconds_ask * sample_rate
+plt.subplot(9, 1, 5)
+plt.plot(ask_time[:samples_to_display_ask], ask_modulated[:samples_to_display_ask], 'm')
+plt.title(f'ASK Modulated Signal (First {display_seconds_ask} seconds)')
+plt.xlabel('Time (s)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+
 # FSK carrier signal for Logic 0 (display only 1 second for clarity)
-plt.subplot(7, 1, 5)
+plt.subplot(9, 1, 6)
 plt.plot(fsk_time[:sample_rate], fsk_carrier0[:sample_rate], 'c')
 plt.title('FSK Carrier Signal (Logic 0, 1 second)')
 plt.xlabel('Time (s)')
@@ -76,7 +88,7 @@ plt.ylabel('Amplitude')
 plt.grid(True)
 
 # FSK carrier signal for Logic 1 (display only 1 second for clarity)
-plt.subplot(7, 1, 6)
+plt.subplot(9, 1, 7)
 plt.plot(fsk_time[:sample_rate], fsk_carrier1[:sample_rate], 'y')
 plt.title('FSK Carrier Signal (Logic 1, 1 second)')
 plt.xlabel('Time (s)')
@@ -84,9 +96,18 @@ plt.ylabel('Amplitude')
 plt.grid(True)
 
 # FSK modulated signal
-plt.subplot(7, 1, 7)
+plt.subplot(9, 1, 8)
 plt.plot(fsk_time, fsk_modulated, 'k')
 plt.title('FSK Modulated Signal')
+plt.xlabel('Time (s)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+
+# FSK modulated signal for desired seconds
+samples_to_display_fsk = display_seconds_fsk * sample_rate
+plt.subplot(9, 1, 9)
+plt.plot(fsk_time[:samples_to_display_fsk], fsk_modulated[:samples_to_display_fsk], 'k')
+plt.title(f'FSK Modulated Signal (First {display_seconds_fsk} seconds)')
 plt.xlabel('Time (s)')
 plt.ylabel('Amplitude')
 plt.grid(True)
