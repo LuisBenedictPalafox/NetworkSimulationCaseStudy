@@ -1,15 +1,22 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def ascii_to_binary(ascii_string):
+    return ''.join(format(ord(char), '08b') for char in ascii_string)
+
+def binary_to_ascii(binary_string):
+    return ''.join(chr(int(binary_string[i:i+8], 2)) for i in range(0, len(binary_string), 8))
+
 # Part 1 - Modulation Technique
 # Set parameters
 bit_duration = 1              # Duration of each bit in seconds
-num_bits = 16               # Number of bits in the binary data
 samples_per_second = 500      # Number of samples per second
 
-# Accept custom 16-bit binary data
-binary_data_str = input("Enter a 16-bit binary string: ")
+# Accept custom ASCII input and convert to binary
+ascii_input = input("Enter an ASCII string: ")
+binary_data_str = ascii_to_binary(ascii_input)
 binary_data = np.array([int(bit) for bit in binary_data_str])
+num_bits = len(binary_data)
 
 # ASK (Amplitude Shift Keying) parameters
 ask_carrier_freq = 50
@@ -117,9 +124,16 @@ for i in range(num_bits):
     avg_25Hz = np.mean(fsk_modulated_signal[sample_start:sample_end] * fsk_carrier_wave0[sample_start:sample_end])
     fsk_correlation_diffs[i] = avg_50Hz - avg_25Hz
     fsk_demodulated_data[i] = int(fsk_correlation_diffs[i] > 0)
-# print(avg_25Hz)
-# print(avg_50Hz)
-# print(fsk_correlation_diffs)
+
+# Convert demodulated binary data back to ASCII
+ask_demodulated_binary_str = ''.join(map(str, ask_demodulated_data.astype(int)))
+fsk_demodulated_binary_str = ''.join(map(str, fsk_demodulated_data.astype(int)))
+ask_demodulated_ascii = binary_to_ascii(ask_demodulated_binary_str)
+fsk_demodulated_ascii = binary_to_ascii(fsk_demodulated_binary_str)
+
+# Print demodulated ASCII results
+print("Demodulated ASCII from ASK signal:", ask_demodulated_ascii)
+print("Demodulated ASCII from FSK signal:", fsk_demodulated_ascii)
 
 # Plotting for Part 2
 plt.figure(figsize=(14, 10))
